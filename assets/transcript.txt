@@ -1,0 +1,105 @@
+Meeting Recording Transcript
+Platform Weekly Sync
+February 10, 2026
+
+[00:00] Priya (Platform Lead): Alright everyone, let's get started. It's 2 PM UTC. Thanks for joining. Today we have three main items: the database migration update, the new monitoring dashboard rollout, and then we need to discuss the API rate limiting issue that came up last week. 
+
+[00:01] Priya: Let me do a quick roll call. We have Alex from Engineering, Sarah from DevOps, and Marcus from Product. I know Jamie is out sick today. Anyone else missing?
+
+[00:02] Alex (Engineering): Just us four I think.
+
+[00:02] Sarah (DevOps): Yep, looks good.
+
+[00:03] Priya: Perfect. Let's jump into the database migration. Alex, you want to give us the update?
+
+[00:03] Alex: Sure. So we completed the staging migration last Thursday without issues. Performance tests look good—query times actually improved by about 15% which was better than expected. We did hit one snag with the indexing strategy on the users table, but we've fixed that.
+
+[00:04] Sarah: What was the indexing issue?
+
+[00:05] Alex: We had a composite index that wasn't getting used properly. Turned out the query planner was choosing a different path. We rebuilt it with the columns in a different order and now it's working as expected.
+
+[00:06] Priya: Okay, so are we green to migrate production?
+
+[00:06] Alex: I think so. I'd like to do it this Saturday during the maintenance window. That gives us the whole weekend to monitor and rollback if needed.
+
+[00:07] Sarah: I'm comfortable with that timeline. I can be on call Saturday.
+
+[00:07] Marcus (Product): Will there be any user-facing downtime?
+
+[00:08] Alex: We're planning for a 2-hour window, but realistically it should be under 45 minutes. We'll put up the maintenance page at 6 AM UTC.
+
+[00:09] Priya: Alright, decision made. We'll proceed with the production migration this Saturday, February 15th, starting at 6 AM UTC. Alex, you're owning the migration. Sarah, you're on call for monitoring. Can you two coordinate on the runbook?
+
+[00:10] Alex: Yep, I'll have a draft runbook ready by Wednesday.
+
+[00:10] Sarah: Works for me. I'll review it Thursday.
+
+[00:11] Priya: Great. Let's move to the monitoring dashboard. Sarah, this is yours.
+
+[00:12] Sarah: Right, so the new Grafana dashboard is ready. It includes all the metrics we discussed—API latency, error rates, database connection pool usage, and the new SLA tracking panel. I demoed it in last week's DevOps sync and got positive feedback.
+
+[00:13] Marcus: Can we get custom alerts set up for product-specific metrics? Like conversion funnel drop-offs?
+
+[00:14] Sarah: Absolutely. The dashboard is template-based so we can clone it and customize per team. I just need you to send me the specific metrics you want to track.
+
+[00:15] Marcus: I'll send that over by end of week.
+
+[00:15] Priya: When can we roll this out to all teams?
+
+[00:16] Sarah: It's ready now. I just need approval to announce it and schedule training sessions.
+
+[00:17] Priya: Approved. Let's roll it out next Monday, February 17th. Sarah, can you schedule 30-minute training sessions for each team?
+
+[00:18] Sarah: Will do. I'll send calendar invites by end of day tomorrow.
+
+[00:19] Priya: Perfect. Last item—the API rate limiting issue. This came up from the support team. Marcus, you flagged this?
+
+[00:20] Marcus: Yeah, we've had three enterprise customers hit rate limits unexpectedly in the last week. They're all doing legitimate bulk operations but getting throttled. It's causing friction.
+
+[00:21] Alex: What are the current limits?
+
+[00:22] Marcus: 1000 requests per hour for standard tier, 5000 for enterprise. The customers hitting issues are all on enterprise but doing data exports that generate 8-10K requests.
+
+[00:23] Sarah: Are these one-time exports or regular operations?
+
+[00:24] Marcus: Mix of both. Some are monthly reports, others are ad-hoc data pulls.
+
+[00:25] Priya: Do we have the capacity to raise the limits?
+
+[00:26] Alex: Technically yes, but I'm worried about opening the floodgates. Can we implement a burst allowance instead? Like, allow 10K requests in a short period but keep the hourly average at 5K?
+
+[00:27] Sarah: That's a good middle ground. We do that pattern in other services.
+
+[00:28] Marcus: I like that approach. Would solve the export use case without risking abuse.
+
+[00:29] Priya: Okay, let's do it. Alex, can you spec out the burst allowance approach and get an estimate on implementation time?
+
+[00:30] Alex: Sure. I'll have a proposal by Friday. Should include the technical design and timeline.
+
+[00:31] Priya: Great. We need to move on this quickly though—Marcus, can you let the affected customers know we're working on a fix and give them a workaround in the meantime?
+
+[00:32] Marcus: Yeah, I can reach out today. The workaround is to split their requests across multiple API keys, right?
+
+[00:33] Alex: Correct, or batch their requests with longer delays.
+
+[00:34] Marcus: Got it. I'll send that communication this afternoon.
+
+[00:35] Priya: Perfect. Anything else we need to cover?
+
+[00:36] Sarah: Quick question—are we still planning to deprecate the v1 API endpoints in March?
+
+[00:37] Alex: That's the plan, but we should probably review usage numbers first. I think there are still a few integrations that haven't migrated.
+
+[00:38] Priya: Let's table that for next week. Alex, can you pull the v1 usage data before our next meeting?
+
+[00:39] Alex: Will do.
+
+[00:40] Priya: Alright, I think that's everything. Thanks everyone. Next sync is same time next week, February 17th at 2 PM UTC. I'll send out minutes this afternoon.
+
+[00:41] Sarah: Thanks Priya.
+
+[00:41] Alex: Thanks all.
+
+[00:41] Marcus: Thanks, bye!
+
+[End of recording: 00:42]
