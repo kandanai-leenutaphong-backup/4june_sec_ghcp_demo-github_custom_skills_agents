@@ -7,7 +7,7 @@ Language-specific rules are in separate instruction files.
 
 ## Security Critical Issues
 
-- Avoid the use API Key, use managed identity or entra id where possible.
+- Do not use API Key at all in the code, use DefaultAzureCredential() instead and managed identity or Entra ID where possible.
 - Look for SQL injection and XSS vulnerabilities
 - Verify proper input validation and sanitization
 - Review authentication and authorization logic
