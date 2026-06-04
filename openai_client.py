@@ -32,14 +32,20 @@ def _read_int_env(name: str, default: int) -> int:
     value = os.getenv(name)
     if value is None:
         return default
-    return int(value)
+    try:
+        return int(value)
+    except ValueError as error:
+        raise ValueError(f"Invalid integer value for {name}: {value!r}") from error
 
 
 def _read_float_env(name: str, default: float) -> float:
     value = os.getenv(name)
     if value is None:
         return default
-    return float(value)
+    try:
+        return float(value)
+    except ValueError as error:
+        raise ValueError(f"Invalid float value for {name}: {value!r}") from error
 
 
 def call_azure_openai_with_retry(
@@ -87,7 +93,7 @@ def call_azure_openai_with_retry(
                 latency_ms=latency_ms,
             )
             return response
-        except Exception as error:  # pragma: no cover - exercised in tests via raised exceptions
+        except Exception as error:
             latency_ms = round((time_fn() - start) * 1000, 2)
             status_code = _extract_status_code(error)
             retryable = _is_retryable(status_code)
@@ -108,4 +114,3 @@ def call_azure_openai_with_retry(
 
             backoff_seconds = min(base_backoff * (2 ** (attempt - 1)), max_backoff)
             sleep_fn(backoff_seconds)
-

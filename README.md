@@ -25,7 +25,7 @@ Side note on custom PR Review: https://github.com/skills/copilot-code-review/blo
 
 ## Azure OpenAI retry + logging configuration
 
-The repository includes a retry wrapper in `/tmp/workspace/edsml-kl121/github_custom_skills_agents/openai_client.py` and centralized structured logging helpers in `/tmp/workspace/edsml-kl121/github_custom_skills_agents/openai_logging.py`.
+The repository includes a retry wrapper in `openai_client.py` and centralized structured logging helpers in `openai_logging.py`.
 
 Set these environment variables to tune retries:
 
