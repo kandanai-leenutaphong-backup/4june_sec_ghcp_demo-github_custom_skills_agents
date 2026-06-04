@@ -5,7 +5,7 @@ from typing import Any, Callable
 from openai_logging import get_correlation_id, get_logger, log_openai_request
 
 
-ADDITIONAL_RETRYABLE_STATUS_CODES = {429}
+RETRYABLE_CLIENT_ERROR_CODES = {429}
 
 
 def _extract_status_code(error: Exception) -> int | None:
@@ -25,7 +25,7 @@ def _extract_status_code(error: Exception) -> int | None:
 def _is_retryable(status_code: int | None) -> bool:
     if status_code is None:
         return False
-    return status_code in ADDITIONAL_RETRYABLE_STATUS_CODES or 500 <= status_code < 600
+    return status_code in RETRYABLE_CLIENT_ERROR_CODES or 500 <= status_code < 600
 
 
 def _read_int_env(name: str, default: int) -> int:

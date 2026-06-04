@@ -35,4 +35,5 @@ Set these environment variables to tune retries:
 
 Behavior:
 - Retries use exponential backoff for HTTP `429` and `5xx` failures.
+- Retries use exponential backoff for HTTP `429` and `5xx` (`500-599`) failures.
 - Each request attempt writes a structured log entry with `correlation_id`, `attempt`, `status_code`, `success`, and `latency_ms`.
